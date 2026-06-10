@@ -245,6 +245,35 @@
       font-weight: 600;
     }
 
+    /* ── Session breakdown ───────────────────────────── */
+    .session-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .sess-stat {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border: 1px solid;
+    }
+
+    .sess-stat .cnt {
+      font-size: 1.7rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .sess-stat.d1  { background: #ebf4ff; color: #2b6cb0; border-color: #bee3f8; }
+    .sess-stat.d2  { background: #fff5f5; color: #c53030; border-color: #fed7d7; }
+    .sess-stat.mix { background: #fffaf0; color: #c05621; border-color: #fbd38d; }
+
     footer {
       text-align: center;
       padding: 20px;
@@ -359,6 +388,16 @@
     </div>
   </div>
 
+  <!-- 場次統計 -->
+  <div class="section-title">場次統計</div>
+  <div class="session-summary" id="sess-sum-p2"></div>
+  <div class="table-wrap" style="margin-bottom:36px">
+    <table>
+      <thead><tr><th>日期</th><th>課表</th><th>訓練動作</th></tr></thead>
+      <tbody id="sess-tbody-p2"></tbody>
+    </table>
+  </div>
+
   <!-- 統計 -->
   <div class="stats" id="stats-p2"></div>
 
@@ -463,6 +502,16 @@
       </div>
 
     </div>
+  </div>
+
+  <!-- 場次統計 -->
+  <div class="section-title">場次統計</div>
+  <div class="session-summary" id="sess-sum-p1"></div>
+  <div class="table-wrap" style="margin-bottom:36px">
+    <table>
+      <thead><tr><th>日期</th><th>課表</th><th>訓練動作</th></tr></thead>
+      <tbody id="sess-tbody-p1"></tbody>
+    </table>
   </div>
 
   <!-- 統計 -->
@@ -574,6 +623,16 @@
       </div>
 
     </div>
+  </div>
+
+  <!-- 場次統計 -->
+  <div class="section-title">場次統計</div>
+  <div class="session-summary" id="sess-sum-p0"></div>
+  <div class="table-wrap" style="margin-bottom:36px">
+    <table>
+      <thead><tr><th>日期</th><th>課表</th><th>訓練動作</th></tr></thead>
+      <tbody id="sess-tbody-p0"></tbody>
+    </table>
   </div>
 
   <div class="stats" id="stats-p0"></div>
@@ -881,6 +940,48 @@ function renderCharts(gridId, log, defs) {
   });
 }
 
+// 場次分類
+function classifySessions(log, d1Markers, d2Markers) {
+  const byDate = {};
+  log.forEach(r => {
+    if (!byDate[r[0]]) byDate[r[0]] = [];
+    if (!byDate[r[0]].includes(r[1])) byDate[r[0]].push(r[1]);
+  });
+  return Object.entries(byDate)
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([date, exercises]) => {
+      const isD1 = d1Markers.some(m => exercises.includes(m));
+      const isD2 = d2Markers.some(m => exercises.includes(m));
+      const type = (isD1 && isD2) ? 'D1+D2' : isD1 ? 'D1' : isD2 ? 'D2' : '?';
+      return { date, type, exercises };
+    });
+}
+
+// 場次統計 render
+const SKIP_EX = new Set(['側棒式','棒式','肘撐懸吊舉腿','原地蟲爬','反手引體向上','槓鈴反手引體向上','懸吊舉膝','懸吊舉腿']);
+
+function renderSessionBreakdown(sumId, tbodyId, sessions, d1Label, d2Label) {
+  const d1  = sessions.filter(s => s.type === 'D1').length;
+  const d2  = sessions.filter(s => s.type === 'D2').length;
+  const mix = sessions.filter(s => s.type === 'D1+D2').length;
+
+  document.getElementById(sumId).innerHTML =
+    `<div class="sess-stat d1"><div>${d1Label}</div><div class="cnt">${d1}</div><div>次</div></div>` +
+    `<div class="sess-stat d2"><div>${d2Label}</div><div class="cnt">${d2}</div><div>次</div></div>` +
+    (mix ? `<div class="sess-stat mix"><div>混合</div><div class="cnt">${mix}</div><div>次</div></div>` : '');
+
+  document.getElementById(tbodyId).innerHTML = sessions.map(s => {
+    const color = s.type === 'D1' ? '#2b6cb0' : s.type === 'D2' ? '#c53030' : '#c05621';
+    const bg    = s.type === 'D1' ? '#ebf4ff' : s.type === 'D2' ? '#fff5f5' : '#fffaf0';
+    const exStr = s.exercises.filter(e => !SKIP_EX.has(e)).join('　');
+    return `<tr>
+      <td>${s.date}</td>
+      <td><span class="badge" style="background:${bg};color:${color}">${s.type}</span></td>
+      <td style="color:#4a5568;font-size:0.8rem">${exStr}</td>
+    </tr>`;
+  }).join('');
+}
+
 function renderTable(tbodyId, log) {
   const rows = [...log]
     .filter(r => r[2] > 0)
@@ -1002,12 +1103,20 @@ function switchTab(id) {
   event.currentTarget.classList.add('active');
 
   if (id === 'phase1' && !p1Rendered) {
+    const p1s = classifySessions(P1_LOG,
+      ['六角槓硬舉','槓鈴肩推','酒杯後腳抬高蹲'],
+      ['高背槓深蹲（離心3s）','啞鈴臥推','懸垂划船','啞鈴窄分腿RDL']);
+    renderSessionBreakdown('sess-sum-p1','sess-tbody-p1', p1s, '單數週','雙數週');
     renderStats('stats-p1',  P1_LOG, P1_EXERCISES);
     renderCharts('charts-p1', P1_LOG, P1_EXERCISES);
     renderTable('log-p1',    P1_LOG);
     p1Rendered = true;
   }
   if (id === 'phase0' && !p0Rendered) {
+    const p0s = classifySessions(P0_LOG,
+      ['高背槓深蹲底部暫停','槓鈴架上臥推T&G','椅上單手啞鈴划船'],
+      ['墊上傳統硬舉','槓鈴架上肩推','酒杯分腿蹲']);
+    renderSessionBreakdown('sess-sum-p0','sess-tbody-p0', p0s, 'Day 1','Day 2');
     renderStats('stats-p0',  P0_LOG, P0_EXERCISES);
     renderCharts('charts-p0', P0_LOG, P0_EXERCISES);
     renderTable('log-p0',    P0_LOG);
@@ -1019,6 +1128,11 @@ function switchTab(id) {
 // Init (Phase 2 on load)
 // ════════════════════════════════════════════════════════
 document.getElementById('last-updated').textContent = new Date().toLocaleDateString('zh-TW');
+
+const p2s = classifySessions(P2_LOG,
+  ['高背槓深蹲','槓鈴反式划船','單邊啞鈴臥推','羅馬椅胸抱槓片'],
+  ['相撲硬舉T&G','跪姿啞鈴肩推','滑輪下拉','酒杯跨步蹲','肘撐懸吊舉腿']);
+renderSessionBreakdown('sess-sum-p2','sess-tbody-p2', p2s, 'Day 1','Day 2');
 renderStats('stats-p2',  P2_LOG, P2_EXERCISES);
 renderCharts('charts-p2', P2_LOG, P2_EXERCISES);
 renderTable('log-p2',    P2_LOG);
