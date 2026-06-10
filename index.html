@@ -11,14 +11,14 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #0f1117;
-      color: #e2e8f0;
+      background: #f0f4f8;
+      color: #1a202c;
       min-height: 100vh;
     }
 
     header {
-      background: linear-gradient(135deg, #1a1f2e 0%, #16213e 100%);
-      border-bottom: 1px solid #2d3748;
+      background: linear-gradient(135deg, #ffffff 0%, #eef2ff 100%);
+      border-bottom: 1px solid #d6dce8;
       padding: 24px 32px;
     }
 
@@ -26,6 +26,7 @@
       font-size: 1.6rem;
       font-weight: 700;
       letter-spacing: 0.02em;
+      color: #1a202c;
     }
 
     header p {
@@ -49,11 +50,12 @@
     }
 
     .stat-card {
-      background: #1a1f2e;
-      border: 1px solid #2d3748;
+      background: #ffffff;
+      border: 1px solid #d6dce8;
       border-radius: 12px;
       padding: 20px;
       text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
 
     .stat-card .label {
@@ -80,10 +82,10 @@
     .section-title {
       font-size: 1rem;
       font-weight: 600;
-      color: #a0aec0;
+      color: #4a5568;
       margin-bottom: 16px;
       padding-bottom: 8px;
-      border-bottom: 1px solid #2d3748;
+      border-bottom: 1px solid #d6dce8;
     }
 
     .charts-grid {
@@ -94,10 +96,11 @@
     }
 
     .chart-card {
-      background: #1a1f2e;
-      border: 1px solid #2d3748;
+      background: #ffffff;
+      border: 1px solid #d6dce8;
       border-radius: 12px;
       padding: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
 
     .chart-card .chart-title {
@@ -120,17 +123,19 @@
     .table-wrap {
       overflow-x: auto;
       border-radius: 12px;
-      border: 1px solid #2d3748;
+      border: 1px solid #d6dce8;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.875rem;
+      background: #ffffff;
     }
 
     thead tr {
-      background: #1e2433;
+      background: #f7f9fc;
     }
 
     th {
@@ -144,15 +149,15 @@
     }
 
     tbody tr {
-      border-top: 1px solid #2d3748;
+      border-top: 1px solid #e8edf3;
       transition: background 0.15s;
     }
 
-    tbody tr:hover { background: #1e2433; }
+    tbody tr:hover { background: #f7f9fc; }
 
     td {
       padding: 11px 16px;
-      color: #cbd5e0;
+      color: #2d3748;
     }
 
     .badge {
@@ -168,7 +173,7 @@
       padding: 24px;
       font-size: 0.75rem;
       color: #4a5568;
-      border-top: 1px solid #2d3748;
+      border-top: 1px solid #d6dce8;
       margin-top: 12px;
     }
   </style>
@@ -291,7 +296,7 @@ const EXERCISES = [
 // 渲染
 // ════════════════════════════════════════════════════════
 Chart.defaults.color = '#718096';
-Chart.defaults.borderColor = '#2d3748';
+Chart.defaults.borderColor = '#e2e8f0';
 
 function getExerciseData(key) {
   return LOG
@@ -324,11 +329,11 @@ function buildChart(canvasId, ex) {
         x: {
           type: 'time',
           time: { unit: 'day', displayFormats: { day: 'MM/dd' } },
-          grid: { color: '#2d374866' },
+          grid: { color: '#e2e8f0' },
           ticks: { maxTicksLimit: 6 },
         },
         y: {
-          grid: { color: '#2d374866' },
+          grid: { color: '#e2e8f0' },
           ticks: { callback: v => v + ' kg' },
           beginAtZero: false,
         }
