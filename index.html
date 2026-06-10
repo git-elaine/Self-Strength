@@ -16,36 +16,123 @@
       min-height: 100vh;
     }
 
+    /* ── Header ───────────────────────────────────────── */
     header {
       background: linear-gradient(135deg, #ffffff 0%, #eef2ff 100%);
       border-bottom: 1px solid #d6dce8;
-      padding: 24px 32px;
+      padding: 20px 32px 0;
     }
 
-    header h1 {
-      font-size: 1.6rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      color: #1a202c;
+    .header-top { padding-bottom: 16px; }
+
+    header h1 { font-size: 1.5rem; font-weight: 700; color: #1a202c; }
+    header p  { margin-top: 4px; font-size: 0.82rem; color: #718096; }
+
+    /* ── Tab bar ──────────────────────────────────────── */
+    .tab-bar {
+      display: flex;
+      gap: 4px;
+      padding-top: 8px;
     }
 
-    header p {
-      margin-top: 4px;
-      font-size: 0.85rem;
-      color: #718096;
+    .tab-btn {
+      padding: 10px 22px;
+      border: none;
+      border-radius: 8px 8px 0 0;
+      background: #e2e8f0;
+      color: #4a5568;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
     }
 
+    .tab-btn.active {
+      background: #ffffff;
+      color: #2b6cb0;
+      border-bottom: 2px solid #3182ce;
+    }
+
+    .tab-btn:hover:not(.active) { background: #cbd5e0; }
+
+    /* ── Container ────────────────────────────────────── */
     .container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 28px 24px;
     }
 
-    /* ── Stats cards ─────────────────────────────────── */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── Program menu ─────────────────────────────────── */
+    .program-section {
+      margin-bottom: 36px;
+    }
+
+    .program-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .program-card {
+      background: #ffffff;
+      border: 1px solid #d6dce8;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .program-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid currentColor;
+    }
+
+    .program-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .program-card li {
+      display: flex;
+      gap: 10px;
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+
+    .ex-num {
+      font-weight: 700;
+      font-size: 1rem;
+      flex-shrink: 0;
+      width: 22px;
+    }
+
+    .ex-detail { color: #4a5568; }
+    .ex-detail strong { color: #1a202c; }
+    .ex-sets { color: #718096; font-size: 0.78rem; margin-top: 2px; }
+
+    .schedule-note {
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: #f7f9fc;
+      border-left: 3px solid #3182ce;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.8rem;
+      color: #4a5568;
+      line-height: 1.6;
+    }
+
+    /* ── Stats ────────────────────────────────────────── */
     .stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 14px;
       margin-bottom: 36px;
     }
 
@@ -53,13 +140,13 @@
       background: #ffffff;
       border: 1px solid #d6dce8;
       border-radius: 12px;
-      padding: 20px;
+      padding: 18px;
       text-align: center;
       box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
 
     .stat-card .label {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: #718096;
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -67,31 +154,32 @@
     }
 
     .stat-card .value {
-      font-size: 1.8rem;
+      font-size: 1.75rem;
       font-weight: 700;
       line-height: 1;
     }
 
     .stat-card .unit {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #a0aec0;
       margin-left: 2px;
     }
 
-    /* ── Charts grid ─────────────────────────────────── */
+    /* ── Section title ────────────────────────────────── */
     .section-title {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 600;
       color: #4a5568;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       padding-bottom: 8px;
       border-bottom: 1px solid #d6dce8;
     }
 
+    /* ── Charts ───────────────────────────────────────── */
     .charts-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
       margin-bottom: 36px;
     }
 
@@ -99,27 +187,25 @@
       background: #ffffff;
       border: 1px solid #d6dce8;
       border-radius: 12px;
-      padding: 20px;
+      padding: 18px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
 
     .chart-card .chart-title {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 600;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .chart-card .chart-sub {
-      font-size: 0.75rem;
+      font-size: 0.73rem;
       color: #718096;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
-    .chart-card canvas {
-      max-height: 220px;
-    }
+    .chart-card canvas { max-height: 200px; }
 
-    /* ── Recent sessions table ───────────────────────── */
+    /* ── Table ────────────────────────────────────────── */
     .table-wrap {
       overflow-x: auto;
       border-radius: 12px;
@@ -130,49 +216,40 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.875rem;
+      font-size: 0.85rem;
       background: #ffffff;
     }
 
-    thead tr {
-      background: #f7f9fc;
-    }
+    thead tr { background: #f7f9fc; }
 
     th {
-      padding: 12px 16px;
+      padding: 11px 14px;
       text-align: left;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: #718096;
       font-weight: 600;
     }
 
-    tbody tr {
-      border-top: 1px solid #e8edf3;
-      transition: background 0.15s;
-    }
-
+    tbody tr { border-top: 1px solid #e8edf3; transition: background 0.12s; }
     tbody tr:hover { background: #f7f9fc; }
 
-    td {
-      padding: 11px 16px;
-      color: #2d3748;
-    }
+    td { padding: 10px 14px; color: #2d3748; }
 
     .badge {
       display: inline-block;
-      padding: 2px 10px;
+      padding: 2px 9px;
       border-radius: 999px;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 600;
     }
 
     footer {
       text-align: center;
-      padding: 24px;
-      font-size: 0.75rem;
-      color: #4a5568;
+      padding: 20px;
+      font-size: 0.73rem;
+      color: #a0aec0;
       border-top: 1px solid #d6dce8;
       margin-top: 12px;
     }
@@ -181,49 +258,239 @@
 <body>
 
 <header>
-  <h1>大P 重訓進步追蹤</h1>
-  <p>教練：Jerry Sun　｜　起始日：2026/05/11</p>
+  <div class="header-top">
+    <h1>大P 重訓進步追蹤</h1>
+    <p>教練：Jerry Sun　｜　起始日：2026.01</p>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('phase2')">現在課表（2026.05.11 起）</button>
+    <button class="tab-btn" onclick="switchTab('phase1')">過去課表（2026.02 – 05.09）</button>
+  </div>
 </header>
 
+<!-- ════════════════════════════════════════════════════
+     TAB 1 — 現在課表  (Phase 2)
+════════════════════════════════════════════════════ -->
+<div id="tab-phase2" class="tab-content active">
 <div class="container">
 
-  <!-- Stats -->
-  <div class="stats" id="stats"></div>
+  <!-- 課表菜單 -->
+  <div class="program-section">
+    <div class="section-title">課表內容</div>
+    <div class="program-grid">
 
-  <!-- Charts -->
+      <div class="program-card" style="border-top: 3px solid #4a86e8;">
+        <h3 style="color:#4a86e8">Day 1</h3>
+        <ul>
+          <li>
+            <span class="ex-num">①</span>
+            <div>
+              <div class="ex-detail"><strong>高背槓深蹲</strong>　正常速度下蹲，大力站起</div>
+              <div class="ex-sets">比照先前重量或可增加　4 × 6</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">②</span>
+            <div>
+              <div class="ex-detail"><strong>槓鈴反式划船</strong>（臥推架高反著拉）</div>
+              <div class="ex-sets">體重　3 × 8</div>
+              <div class="ex-detail" style="margin-top:6px"><strong>單邊啞鈴臥推</strong>（人半邊在椅外）</div>
+              <div class="ex-sets">7.5 kg → 10 kg　各 3 × 6</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">③</span>
+            <div>
+              <div class="ex-detail"><strong>羅馬椅胸抱槓片</strong>（椅墊在髖屈位置）</div>
+              <div class="ex-sets">10 kg　3 × 10</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">④</span>
+            <div>
+              <div class="ex-detail"><strong>側棒式</strong></div>
+              <div class="ex-sets">3 × 各 20 秒</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="program-card" style="border-top: 3px solid #e06666;">
+        <h3 style="color:#e06666">Day 2</h3>
+        <ul>
+          <li>
+            <span class="ex-num">①</span>
+            <div>
+              <div class="ex-detail"><strong>相撲硬舉 Touch & Go</strong></div>
+              <div class="ex-sets">40 kg 起　4 × 6</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">②</span>
+            <div>
+              <div class="ex-detail"><strong>單手啞鈴跪姿肩推</strong>（膝跪啞鈴側）</div>
+              <div class="ex-sets">5 kg → 7.5 kg　3 × 6–8 各邊</div>
+              <div class="ex-detail" style="margin-top:6px"><strong>器械滑輪下拉</strong></div>
+              <div class="ex-sets">自行測試重量　3 × 8</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">③</span>
+            <div>
+              <div class="ex-detail"><strong>酒杯原地前後跨步蹲</strong></div>
+              <div class="ex-sets">10 kg →　3 × 同腳輪流各 3 前後</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">④</span>
+            <div>
+              <div class="ex-detail"><strong>肘撐懸吊舉腿</strong>（儘量微屈膝）</div>
+              <div class="ex-sets">體重　3 × 10</div>
+            </div>
+          </li>
+        </ul>
+        <div class="schedule-note">
+          上班日：各練 ①②　｜　週末：全練<br>
+          Day 1 / Day 2 輪流交替
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 統計 -->
+  <div class="stats" id="stats-p2"></div>
+
+  <!-- 圖表 -->
   <div class="section-title">重量進步折線圖</div>
-  <div class="charts-grid" id="charts-grid"></div>
+  <div class="charts-grid" id="charts-p2"></div>
 
-  <!-- Recent log -->
+  <!-- 日誌 -->
   <div class="section-title">最近訓練紀錄</div>
   <div class="table-wrap">
     <table>
-      <thead>
-        <tr>
-          <th>日期</th>
-          <th>動作</th>
-          <th>重量</th>
-          <th>組數</th>
-          <th>次數</th>
-          <th>訓練量</th>
-          <th>備注</th>
-        </tr>
-      </thead>
-      <tbody id="log-tbody"></tbody>
+      <thead><tr><th>日期</th><th>動作</th><th>重量</th><th>組數</th><th>次數</th><th>訓練量</th><th>備注</th></tr></thead>
+      <tbody id="log-p2"></tbody>
     </table>
   </div>
 
 </div>
+</div><!-- /tab-phase2 -->
 
-<footer>最後更新：<span id="last-updated"></span></footer>
+
+<!-- ════════════════════════════════════════════════════
+     TAB 2 — 過去課表  (Phase 1)
+════════════════════════════════════════════════════ -->
+<div id="tab-phase1" class="tab-content">
+<div class="container">
+
+  <!-- 課表菜單 -->
+  <div class="program-section">
+    <div class="section-title">課表內容</div>
+    <div class="program-grid">
+
+      <div class="program-card" style="border-top: 3px solid #6aa84f;">
+        <h3 style="color:#6aa84f">單數週</h3>
+        <ul>
+          <li>
+            <span class="ex-num">①</span>
+            <div>
+              <div class="ex-detail"><strong>六角槓硬舉</strong></div>
+              <div class="ex-sets">40 kg　4 × 6</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">②</span>
+            <div>
+              <div class="ex-detail"><strong>槓鈴肩推</strong>（完放回 J 勾）＋ <strong>反手引體向上</strong></div>
+              <div class="ex-sets">12–15 kg　4 × 6 + 6（配對組）</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">③</span>
+            <div>
+              <div class="ex-detail"><strong>啞鈴酒杯後腳抬高蹲</strong></div>
+              <div class="ex-sets">12 kg　3 × 各 8</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">④</span>
+            <div>
+              <div class="ex-detail"><strong>棒式</strong></div>
+              <div class="ex-sets">3 × 30 秒</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="program-card" style="border-top: 3px solid #e69138;">
+        <h3 style="color:#e69138">雙數週</h3>
+        <ul>
+          <li>
+            <span class="ex-num">①</span>
+            <div>
+              <div class="ex-detail"><strong>高背槓深蹲</strong>　離心 3 秒到底，大力站起</div>
+              <div class="ex-sets">以上次重量執行　4 × 6</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">②</span>
+            <div>
+              <div class="ex-detail"><strong>啞鈴臥推</strong>＋ <strong>槓鈴懸垂划船</strong>（架上硬舉方式起）</div>
+              <div class="ex-sets">7–8 kg / 25 kg+　4 × 6 + 6（配對組）</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">③</span>
+            <div>
+              <div class="ex-detail"><strong>啞鈴窄分腿 RDL</strong>（一邊前腳掌對另邊腳跟）</div>
+              <div class="ex-sets">10–12 kg　3 × 各 6</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">④</span>
+            <div>
+              <div class="ex-detail"><strong>原地蟲爬</strong></div>
+              <div class="ex-sets">3 × 前後各 4 輪</div>
+            </div>
+          </li>
+        </ul>
+        <div class="schedule-note">
+          週一：練 ①②　｜　週三：上課　｜　週六：全練<br>
+          單數週 / 雙數週每週輪替
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 統計 -->
+  <div class="stats" id="stats-p1"></div>
+
+  <!-- 圖表 -->
+  <div class="section-title">重量進步折線圖</div>
+  <div class="charts-grid" id="charts-p1"></div>
+
+  <!-- 日誌 -->
+  <div class="section-title">訓練紀錄</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>日期</th><th>動作</th><th>重量</th><th>組數</th><th>次數</th><th>訓練量</th><th>備注</th></tr></thead>
+      <tbody id="log-p1"></tbody>
+    </table>
+  </div>
+
+</div>
+</div><!-- /tab-phase1 -->
+
+<footer>最後更新：<span id="last-updated"></span>　｜　<a href="https://github.com/git-elaine/Self-Strength" target="_blank" style="color:#3182ce">GitHub</a></footer>
 
 <script>
 // ════════════════════════════════════════════════════════
-// 訓練資料  — 之後貼對話給 Claude，它會產生新的 row 讓你加進來
-// 格式：['YYYY-MM-DD', '動作', 重量kg, 組數, 次數, 訓練量kg, '備注']
+// PHASE 2 資料  （2026.05.11 起）
 // ════════════════════════════════════════════════════════
-const LOG = [
-  ['2026-05-11','高背槓深蹲',   35,   1, 6,  210, '各組只做1下，不完整'],
+const P2_LOG = [
+  ['2026-05-11','高背槓深蹲',   35,   1, 6,  210, '各組只做1下，組數不完整'],
   ['2026-05-11','槓鈴反式划船',  0,   3, 6,    0, '體重動作'],
   ['2026-05-11','單邊啞鈴臥推',  7.5, 3, 6,  135, ''],
   ['2026-05-11','羅馬椅胸抱槓片',10,  3,10,  300, ''],
@@ -237,7 +504,7 @@ const LOG = [
 
   ['2026-05-21','高背槓深蹲',   35,   2, 6,  420, '疲勞日，37.5未完成'],
   ['2026-05-21','槓鈴反式划船',  0,   3, 6,    0, '架高一格'],
-  ['2026-05-21','單邊啞鈴臥推',  7.5, 3, 6,  135, ''],
+  ['2026-05-21','單邊啞鈴臥推',  7.5, 3, 6,  135, '腳位調整'],
   ['2026-05-21','羅馬椅胸抱槓片',10,  3,10,  300, ''],
   ['2026-05-21','側棒式',         0,  3,20,    0, '秒'],
 
@@ -280,10 +547,7 @@ const LOG = [
   ['2026-06-07','肘撐懸吊舉腿',  0,   3,10,    0, ''],
 ];
 
-// ════════════════════════════════════════════════════════
-// 圖表設定
-// ════════════════════════════════════════════════════════
-const EXERCISES = [
+const P2_EXERCISES = [
   { key: '高背槓深蹲',    label: '高背槓深蹲',    color: '#4a86e8' },
   { key: '相撲硬舉T&G',  label: '相撲硬舉 T&G', color: '#e06666' },
   { key: '單邊啞鈴臥推',  label: '單邊啞鈴臥推',  color: '#6aa84f' },
@@ -293,27 +557,146 @@ const EXERCISES = [
 ];
 
 // ════════════════════════════════════════════════════════
-// 渲染
+// PHASE 1 資料  （2026.02.26 – 2026.05.09）
+// ════════════════════════════════════════════════════════
+const P1_LOG = [
+  // 2026/02/26 單數週
+  ['2026-02-26','六角槓硬舉',      40,   4, 6,  960, ''],
+  ['2026-02-26','槓鈴肩推',        15.5, 3, 6,  279, '第4組降至13kg'],
+  ['2026-02-26','反手引體向上',     0,   3, 8,    0, '體重動作'],
+  ['2026-02-26','酒杯後腳抬高蹲',  12,   3, 8,  288, ''],
+  ['2026-02-26','棒式',             0,   3,30,    0, '秒'],
+
+  // 2026/03/03 單數週
+  ['2026-03-03','六角槓硬舉',      42.5, 3, 6,  765, ''],
+  ['2026-03-03','槓鈴肩推',        15.5, 2, 6,  186, '做成正手（錯誤）'],
+  ['2026-03-03','反手引體向上',     0,   3, 8,    0, ''],
+  ['2026-03-03','酒杯後腳抬高蹲',   5,   3, 8,  120, '公司5kg啞鈴補做'],
+  ['2026-03-03','棒式',             0,   3,30,    0, '秒'],
+
+  // 2026/03/09 雙數週
+  ['2026-03-09','高背槓深蹲（離心3s）', 30, 4, 6, 720, ''],
+  ['2026-03-09','啞鈴臥推',         5,   3, 6,   90, '7.5kg被借走，前三組5kg'],
+  ['2026-03-09','懸垂划船',          0,  4, 6,    0, '空槓，重心偏後需調整'],
+
+  // 2026/03/15 單數週（槓鈴區滿，改練單數週）
+  ['2026-03-15','六角槓硬舉',      42.5, 2, 6,  510, ''],
+  ['2026-03-15','六角槓硬舉',      42.5, 2, 6,  510, '共4組'],
+  ['2026-03-15','槓鈴肩推',        13,   4, 6,  312, '搭配引體'],
+  ['2026-03-15','反手引體向上',     0,   4, 6,    0, ''],
+  ['2026-03-15','酒杯後腳抬高蹲',  12,   3, 8,  288, ''],
+  ['2026-03-15','棒式',             0,   3,30,    0, '秒'],
+
+  // 2026/03/17 雙數週
+  ['2026-03-17','高背槓深蹲（離心3s）', 30, 4, 6, 720, '進步'],
+  ['2026-03-17','啞鈴臥推',         7.5, 4, 6,  180, ''],
+  ['2026-03-17','懸垂划船',         25,  2, 6,  300, '25kg 2組'],
+
+  // 2026/03/21 單數週
+  ['2026-03-21','六角槓硬舉',      45,   2, 6,  540, '42.5×2+45×2'],
+  ['2026-03-21','槓鈴肩推',        15.5, 2, 6,  186, '搭配引體'],
+  ['2026-03-21','反手引體向上',     0,   4, 6,    0, ''],
+  ['2026-03-21','酒杯後腳抬高蹲',  12,   3, 8,  288, ''],
+  ['2026-03-21','棒式',             0,   3,30,    0, '秒'],
+
+  // 2026/03/25 雙數週
+  ['2026-03-25','高背槓深蹲（離心3s）', 32.5, 4, 6, 780, ''],
+  ['2026-03-25','啞鈴臥推',         7.5, 4, 6,  180, ''],
+  ['2026-03-25','懸垂划船',         22.5, 2, 6, 270, ''],
+
+  // 2026/03/27 單數週
+  ['2026-03-27','六角槓硬舉',      47.5, 1, 6,  285, '訓練組'],
+  ['2026-03-27','槓鈴肩推',        15.5, 4, 6,  372, ''],
+  ['2026-03-27','反手引體向上',     0,   4, 6,    0, ''],
+
+  // 2026/03/28 雙數週（全練）
+  ['2026-03-28','高背槓深蹲（離心3s）', 32.5, 2, 6, 390, '30×2+32.5×2'],
+  ['2026-03-28','啞鈴臥推',         7.5, 4, 6,  180, ''],
+  ['2026-03-28','懸垂划船',         25,  4, 6,  600, ''],
+  ['2026-03-28','啞鈴窄分腿RDL',    10,  3, 6,  180, ''],
+  ['2026-03-28','原地蟲爬',          0,  3, 8,    0, '前後各4輪'],
+
+  // 2026/04/01 單數週
+  ['2026-04-01','六角槓硬舉',      47.5, 3, 6,  855, ''],
+  ['2026-04-01','槓鈴肩推',        15.5, 4, 6,  372, ''],
+  ['2026-04-01','反手引體向上',     0,   4, 6,    0, ''],
+
+  // 2026/04/07 雙數週
+  ['2026-04-07','高背槓深蹲（離心3s）', 30, 3, 6, 540, '32.5失敗，退至30'],
+  ['2026-04-07','啞鈴臥推',         7.5, 4, 6,  180, ''],
+  ['2026-04-07','懸垂划船',         25,  4, 6,  600, ''],
+  ['2026-04-07','啞鈴窄分腿RDL',    12,  2, 6,  144, ''],
+
+  // 2026/04/11 單數週（全練）
+  ['2026-04-11','六角槓硬舉',      52.5, 1, 6,  315, '最高嘗試'],
+  ['2026-04-11','槓鈴肩推',        15.5, 4, 6,  372, ''],
+  ['2026-04-11','反手引體向上',     0,   4, 6,    0, ''],
+  ['2026-04-11','酒杯後腳抬高蹲',  12.5, 3, 8,  300, ''],
+
+  // 2026/04/14 雙數週
+  ['2026-04-14','高背槓深蹲（離心3s）', 30, 4, 6, 720, ''],
+  ['2026-04-14','啞鈴臥推',         7.5, 4, 6,  180, ''],
+  ['2026-04-14','懸垂划船',         25,  4, 6,  600, ''],
+
+  // 2026/04/21 單數週
+  ['2026-04-21','六角槓硬舉',      55,   2, 6,  660, '52.5×1+55×2'],
+  ['2026-04-21','槓鈴肩推',        15.5, 4, 6,  372, '嘗試18kg失敗'],
+  ['2026-04-21','反手引體向上',     0,   4, 6,    0, ''],
+  ['2026-04-21','酒杯後腳抬高蹲',  12.5, 3, 8,  300, ''],
+
+  // 2026/05/01 雙數週（全練）
+  ['2026-05-01','高背槓深蹲（離心3s）', 32.5, 4, 6, 780, ''],
+  ['2026-05-01','啞鈴臥推',         7.5, 4, 6,  180, ''],
+  ['2026-05-01','懸垂划船',         25,  4, 6,  600, ''],
+  ['2026-05-01','啞鈴窄分腿RDL',    12,  2, 6,  144, ''],
+  ['2026-05-01','原地蟲爬',          0,  3, 8,    0, '3輪'],
+
+  // 2026/05/03 單數週（全練）
+  ['2026-05-03','六角槓硬舉',      57.5, 1, 6,  345, '55×2+57.5×1'],
+  ['2026-05-03','槓鈴肩推',        15.5, 4, 6,  372, ''],
+  ['2026-05-03','反手引體向上',     0,   4, 6,    0, ''],
+  ['2026-05-03','酒杯後腳抬高蹲',  12.5, 3, 8,  300, ''],
+  ['2026-05-03','棒式',             0,   3,30,    0, '秒'],
+
+  // 2026/05/09 雙數週（全練，最後一次）
+  ['2026-05-09','高背槓深蹲（離心3s）', 32.5, 2, 6, 390, '32.5無法完成4組'],
+  ['2026-05-09','啞鈴臥推',        10,   4, 6,  240, '首次10kg'],
+  ['2026-05-09','懸垂划船',         27.5, 4, 6, 660, '加重'],
+  ['2026-05-09','啞鈴窄分腿RDL',    15,  1, 6,   90, '15kg嘗試'],
+  ['2026-05-09','原地蟲爬',          0,  3, 8,    0, '3輪'],
+];
+
+const P1_EXERCISES = [
+  { key: '六角槓硬舉',           label: '六角槓硬舉',     color: '#4a86e8' },
+  { key: '高背槓深蹲（離心3s）', label: '高背槓深蹲',     color: '#e06666' },
+  { key: '槓鈴肩推',             label: '槓鈴肩推',       color: '#6aa84f' },
+  { key: '啞鈴臥推',             label: '啞鈴臥推',       color: '#e69138' },
+  { key: '懸垂划船',             label: '懸垂划船',       color: '#674ea7' },
+  { key: '酒杯後腳抬高蹲',       label: '酒杯後腳抬高蹲', color: '#cc4125' },
+  { key: '啞鈴窄分腿RDL',        label: '窄分腿 RDL',    color: '#0891b2' },
+];
+
+// ════════════════════════════════════════════════════════
+// Helpers
 // ════════════════════════════════════════════════════════
 Chart.defaults.color = '#718096';
 Chart.defaults.borderColor = '#e2e8f0';
 
-function getExerciseData(key) {
-  return LOG
+function getPoints(log, key) {
+  return log
     .filter(r => r[1] === key && r[2] > 0)
     .map(r => ({ x: r[0], y: r[2] }))
     .sort((a, b) => a.x.localeCompare(b.x));
 }
 
-function buildChart(canvasId, ex) {
-  const pts = getExerciseData(ex.key);
+function buildChart(canvasId, pts, ex) {
   new Chart(document.getElementById(canvasId), {
     type: 'line',
     data: {
       datasets: [{
         data: pts,
         borderColor: ex.color,
-        backgroundColor: ex.color + '22',
+        backgroundColor: ex.color + '20',
         pointBackgroundColor: ex.color,
         pointRadius: 5,
         pointHoverRadius: 7,
@@ -342,24 +725,26 @@ function buildChart(canvasId, ex) {
   });
 }
 
-// Stats
-function renderStats() {
-  const sessions = [...new Set(LOG.map(r => r[0]))].length;
-  const squat  = Math.max(...LOG.filter(r=>r[1]==='高背槓深蹲').map(r=>r[2]));
-  const dl     = Math.max(...LOG.filter(r=>r[1]==='相撲硬舉T&G').map(r=>r[2]));
-  const press  = Math.max(...LOG.filter(r=>r[1]==='單邊啞鈴臥推').map(r=>r[2]));
-  const dates  = LOG.map(r=>r[0]).sort();
-  const weeks  = Math.ceil((new Date(dates[dates.length-1]) - new Date(dates[0])) / 86400000 / 7);
+function renderStats(containerId, log, defs) {
+  const sessions = [...new Set(log.map(r => r[0]))].length;
+  const dates = log.map(r => r[0]).sort();
+  const weeks = Math.ceil(
+    (new Date(dates[dates.length-1]) - new Date(dates[0])) / 86400000 / 7
+  );
+
+  const peaks = defs.slice(0,3).map(ex => {
+    const pts = getPoints(log, ex.key);
+    const max = pts.length ? Math.max(...pts.map(p => p.y)) : 0;
+    return { label: ex.label + '最高', value: max, unit: 'kg', color: ex.color };
+  });
 
   const cards = [
-    { label: '訓練天數', value: sessions, unit: '天', color: '#4a86e8' },
-    { label: '深蹲最高', value: squat,   unit: 'kg', color: '#4a86e8' },
-    { label: '硬舉最高', value: dl,      unit: 'kg', color: '#e06666' },
-    { label: '臥推最高', value: press,   unit: 'kg', color: '#6aa84f' },
-    { label: '訓練週數', value: weeks,   unit: '週', color: '#e69138' },
+    { label: '訓練天數', value: sessions, unit: '天', color: '#3182ce' },
+    ...peaks,
+    { label: '訓練週數', value: weeks, unit: '週', color: '#718096' },
   ];
 
-  document.getElementById('stats').innerHTML = cards.map(c => `
+  document.getElementById(containerId).innerHTML = cards.map(c => `
     <div class="stat-card">
       <div class="label">${c.label}</div>
       <div class="value" style="color:${c.color}">${c.value}<span class="unit">${c.unit}</span></div>
@@ -367,53 +752,78 @@ function renderStats() {
   `).join('');
 }
 
-// Charts
-function renderCharts() {
-  const grid = document.getElementById('charts-grid');
-  grid.innerHTML = EXERCISES.map((ex, i) => {
-    const pts = getExerciseData(ex.key);
-    const max = pts.length ? Math.max(...pts.map(p=>p.y)) : 0;
-    const latest = pts.length ? pts[pts.length-1].y : 0;
+function renderCharts(gridId, log, defs) {
+  const grid = document.getElementById(gridId);
+  grid.innerHTML = defs.map((ex, i) => {
+    const pts = getPoints(log, ex.key);
+    if (!pts.length) return '';
+    const max    = Math.max(...pts.map(p => p.y));
+    const latest = pts[pts.length - 1].y;
     return `
       <div class="chart-card">
         <div class="chart-title" style="color:${ex.color}">${ex.label}</div>
         <div class="chart-sub">最高 ${max} kg　最近 ${latest} kg</div>
-        <canvas id="chart-${i}"></canvas>
-      </div>
-    `;
+        <canvas id="${gridId}-c${i}"></canvas>
+      </div>`;
   }).join('');
 
-  EXERCISES.forEach((ex, i) => buildChart(`chart-${i}`, ex));
+  defs.forEach((ex, i) => {
+    const pts = getPoints(log, ex.key);
+    if (!pts.length) return;
+    buildChart(`${gridId}-c${i}`, pts, ex);
+  });
 }
 
-// Recent log table (last 20 weighted rows, newest first)
-function renderTable() {
-  const rows = [...LOG]
+function renderTable(tbodyId, log) {
+  const rows = [...log]
     .filter(r => r[2] > 0)
-    .sort((a,b) => b[0].localeCompare(a[0]))
-    .slice(0, 20);
+    .sort((a, b) => b[0].localeCompare(a[0]))
+    .slice(0, 25);
 
-  document.getElementById('log-tbody').innerHTML = rows.map(r => {
-    const ex = EXERCISES.find(e => e.key === r[1]);
+  const allDefs = [...P2_EXERCISES, ...P1_EXERCISES];
+
+  document.getElementById(tbodyId).innerHTML = rows.map(r => {
+    const ex = allDefs.find(e => e.key === r[1]);
     const color = ex ? ex.color : '#718096';
     return `
       <tr>
         <td>${r[0]}</td>
-        <td><span class="badge" style="background:${color}22;color:${color}">${r[1]}</span></td>
+        <td><span class="badge" style="background:${color}20;color:${color}">${r[1]}</span></td>
         <td><strong>${r[2]}</strong> kg</td>
         <td>${r[3]}</td>
         <td>${r[4]}</td>
         <td>${r[5]} kg</td>
         <td style="color:#718096;font-size:0.78rem">${r[6]}</td>
-      </tr>
-    `;
+      </tr>`;
   }).join('');
 }
 
+// ════════════════════════════════════════════════════════
+// Tab switching
+// ════════════════════════════════════════════════════════
+let p1Rendered = false;
+
+function switchTab(id) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+
+  if (id === 'phase1' && !p1Rendered) {
+    renderStats('stats-p1',  P1_LOG, P1_EXERCISES);
+    renderCharts('charts-p1', P1_LOG, P1_EXERCISES);
+    renderTable('log-p1',    P1_LOG);
+    p1Rendered = true;
+  }
+}
+
+// ════════════════════════════════════════════════════════
+// Init (Phase 2 on load)
+// ════════════════════════════════════════════════════════
 document.getElementById('last-updated').textContent = new Date().toLocaleDateString('zh-TW');
-renderStats();
-renderCharts();
-renderTable();
+renderStats('stats-p2',  P2_LOG, P2_EXERCISES);
+renderCharts('charts-p2', P2_LOG, P2_EXERCISES);
+renderTable('log-p2',    P2_LOG);
 </script>
 </body>
 </html>
