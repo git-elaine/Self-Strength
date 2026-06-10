@@ -281,6 +281,29 @@
     .sess-stat.d2  { background: #fff5f5; color: #c53030; border-color: #fed7d7; }
     .sess-stat.mix { background: #fffaf0; color: #c05621; border-color: #fbd38d; }
 
+    /* ── Filter bar & sortable ────────────────────────── */
+    .filter-bar { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+
+    .filter-btn {
+      padding: 5px 16px;
+      border: 1px solid #d6dce8;
+      border-radius: 999px;
+      background: #fff;
+      color: #4a5568;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-btn.active { background: #3182ce; color: #fff; border-color: #3182ce; }
+    .filter-btn:hover:not(.active) { background: #f0f4f8; }
+
+    th.sortable { cursor: pointer; user-select: none; }
+    th.sortable:hover { background: #edf2f7; }
+    .sort-arrow { font-size: 0.68rem; margin-left: 2px; opacity: 0.35; }
+    th.sorted .sort-arrow { opacity: 1; color: #3182ce; }
+
     footer {
       text-align: center;
       padding: 20px;
@@ -414,9 +437,25 @@
 
   <!-- 日誌 -->
   <div class="section-title">最近訓練紀錄</div>
+  <div class="filter-bar" id="fbar-p2">
+    <button class="filter-btn active" onclick="filterLog('p2','all',this)">全部</button>
+    <button class="filter-btn" onclick="filterLog('p2','D1',this)">Day 1</button>
+    <button class="filter-btn" onclick="filterLog('p2','D2',this)">Day 2</button>
+  </div>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>日期</th><th>動作</th><th>重量</th><th>組數</th><th>次數</th><th>訓練量</th><th>備注</th></tr></thead>
+      <thead>
+        <tr>
+          <th class="sortable" onclick="sortLog('p2','date',this)">日期 <span class="sort-arrow">↕</span></th>
+          <th>課表</th>
+          <th>動作</th>
+          <th class="sortable" onclick="sortLog('p2','weight',this)">重量 <span class="sort-arrow">↕</span></th>
+          <th>組數</th>
+          <th>次數</th>
+          <th class="sortable" onclick="sortLog('p2','vol',this)">訓練量 <span class="sort-arrow">↕</span></th>
+          <th>備注</th>
+        </tr>
+      </thead>
       <tbody id="log-p2"></tbody>
     </table>
   </div>
@@ -530,9 +569,25 @@
 
   <!-- 日誌 -->
   <div class="section-title">訓練紀錄</div>
+  <div class="filter-bar" id="fbar-p1">
+    <button class="filter-btn active" onclick="filterLog('p1','all',this)">全部</button>
+    <button class="filter-btn" onclick="filterLog('p1','D1',this)">單數週</button>
+    <button class="filter-btn" onclick="filterLog('p1','D2',this)">雙數週</button>
+  </div>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>日期</th><th>動作</th><th>重量</th><th>組數</th><th>次數</th><th>訓練量</th><th>備注</th></tr></thead>
+      <thead>
+        <tr>
+          <th class="sortable" onclick="sortLog('p1','date',this)">日期 <span class="sort-arrow">↕</span></th>
+          <th>課表</th>
+          <th>動作</th>
+          <th class="sortable" onclick="sortLog('p1','weight',this)">重量 <span class="sort-arrow">↕</span></th>
+          <th>組數</th>
+          <th>次數</th>
+          <th class="sortable" onclick="sortLog('p1','vol',this)">訓練量 <span class="sort-arrow">↕</span></th>
+          <th>備注</th>
+        </tr>
+      </thead>
       <tbody id="log-p1"></tbody>
     </table>
   </div>
@@ -646,9 +701,25 @@
   <div class="section-title">重量進步折線圖</div>
   <div class="charts-grid" id="charts-p0"></div>
   <div class="section-title">訓練紀錄</div>
+  <div class="filter-bar" id="fbar-p0">
+    <button class="filter-btn active" onclick="filterLog('p0','all',this)">全部</button>
+    <button class="filter-btn" onclick="filterLog('p0','D1',this)">Day 1</button>
+    <button class="filter-btn" onclick="filterLog('p0','D2',this)">Day 2</button>
+  </div>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>日期</th><th>動作</th><th>重量</th><th>組數</th><th>次數</th><th>訓練量</th><th>備注</th></tr></thead>
+      <thead>
+        <tr>
+          <th class="sortable" onclick="sortLog('p0','date',this)">日期 <span class="sort-arrow">↕</span></th>
+          <th>課表</th>
+          <th>動作</th>
+          <th class="sortable" onclick="sortLog('p0','weight',this)">重量 <span class="sort-arrow">↕</span></th>
+          <th>組數</th>
+          <th>次數</th>
+          <th class="sortable" onclick="sortLog('p0','vol',this)">訓練量 <span class="sort-arrow">↕</span></th>
+          <th>備注</th>
+        </tr>
+      </thead>
       <tbody id="log-p0"></tbody>
     </table>
   </div>
@@ -989,28 +1060,88 @@ function renderSessionBreakdown(sumId, tbodyId, sessions, d1Label, d2Label) {
   }).join('');
 }
 
-function renderTable(tbodyId, log) {
-  const rows = [...log]
-    .filter(r => r[2] > 0)
-    .sort((a, b) => b[0].localeCompare(a[0]))
-    .slice(0, 25);
+// ── 訓練紀錄 表格（含D1/D2分類、篩選、排序）─────────────────
+const _logState = {};
+
+function initLogTable(phase, log, sessions, d1Label, d2Label) {
+  const dateTypeMap = {};
+  sessions.forEach(s => { dateTypeMap[s.date] = s.type; });
 
   const allDefs = [...P2_EXERCISES, ...P1_EXERCISES, ...P0_EXERCISES];
+  const rows = log
+    .filter(r => r[2] > 0)
+    .map(r => ({
+      date: r[0], ex: r[1], weight: r[2], sets: r[3], reps: r[4], vol: r[5], note: r[6],
+      type: dateTypeMap[r[0]] || '',
+      color: (allDefs.find(e => e.key === r[1]) || { color: '#718096' }).color
+    }));
 
-  document.getElementById(tbodyId).innerHTML = rows.map(r => {
-    const ex = allDefs.find(e => e.key === r[1]);
-    const color = ex ? ex.color : '#718096';
-    return `
-      <tr>
-        <td>${r[0]}</td>
-        <td><span class="badge" style="background:${color}20;color:${color}">${r[1]}</span></td>
-        <td><strong>${r[2]}</strong> kg</td>
-        <td>${r[3]}</td>
-        <td>${r[4]}</td>
-        <td>${r[5]} kg</td>
-        <td style="color:#718096;font-size:0.78rem">${r[6]}</td>
-      </tr>`;
-  }).join('');
+  _logState[phase] = { rows, filter: 'all', sortCol: 'date', sortDir: -1, d1Label, d2Label };
+  renderLog(phase);
+}
+
+function filterLog(phase, filter, btn) {
+  _logState[phase].filter = filter;
+  btn.closest('.filter-bar').querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLog(phase);
+}
+
+function sortLog(phase, col, th) {
+  const s = _logState[phase];
+  if (s.sortCol === col) { s.sortDir *= -1; }
+  else { s.sortCol = col; s.sortDir = 1; }
+
+  th.closest('tr').querySelectorAll('th').forEach(h => {
+    h.classList.remove('sorted');
+    const arr = h.querySelector('.sort-arrow');
+    if (arr) arr.textContent = '↕';
+  });
+  th.classList.add('sorted');
+  th.querySelector('.sort-arrow').textContent = s.sortDir === 1 ? '↑' : '↓';
+
+  renderLog(phase);
+}
+
+function renderLog(phase) {
+  const s = _logState[phase];
+  const { d1Label, d2Label } = s;
+
+  let rows = [...s.rows];
+
+  if (s.filter !== 'all') {
+    rows = rows.filter(r => r.type === s.filter || r.type === 'D1+D2');
+  }
+
+  rows.sort((a, b) => {
+    const av = a[s.sortCol], bv = b[s.sortCol];
+    if (typeof av === 'string') return av.localeCompare(bv) * s.sortDir;
+    return (av - bv) * s.sortDir;
+  });
+
+  document.getElementById('log-' + phase).innerHTML = rows.map(r => {
+    let typeBg, typeColor, typeLabel;
+    if (r.type === 'D1+D2') {
+      typeBg = '#fffaf0'; typeColor = '#c05621'; typeLabel = d1Label + '+' + d2Label;
+    } else if (r.type === 'D1') {
+      typeBg = '#ebf4ff'; typeColor = '#2b6cb0'; typeLabel = d1Label;
+    } else if (r.type === 'D2') {
+      typeBg = '#fff5f5'; typeColor = '#c53030'; typeLabel = d2Label;
+    } else {
+      typeBg = '#f7fafc'; typeColor = '#a0aec0'; typeLabel = '—';
+    }
+
+    return `<tr>
+      <td>${r.date}</td>
+      <td><span class="badge" style="background:${typeBg};color:${typeColor};font-size:0.75rem">${typeLabel}</span></td>
+      <td><span class="badge" style="background:${r.color}20;color:${r.color}">${r.ex}</span></td>
+      <td><strong>${r.weight}</strong> kg</td>
+      <td>${r.sets}</td>
+      <td>${r.reps}</td>
+      <td>${r.vol} kg</td>
+      <td style="color:#718096;font-size:0.78rem">${r.note}</td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="8" style="text-align:center;color:#a0aec0;padding:18px">無資料</td></tr>';
 }
 
 // ════════════════════════════════════════════════════════
@@ -1116,7 +1247,7 @@ function switchTab(id) {
     renderSessionBreakdown('sess-sum-p1','sess-tbody-p1', p1s, '單數週','雙數週');
     renderStats('stats-p1',  P1_LOG, P1_EXERCISES);
     renderCharts('charts-p1', P1_LOG, P1_EXERCISES);
-    renderTable('log-p1',    P1_LOG);
+    initLogTable('p1', P1_LOG, p1s, '單數週', '雙數週');
     p1Rendered = true;
   }
   if (id === 'phase0' && !p0Rendered) {
@@ -1126,7 +1257,7 @@ function switchTab(id) {
     renderSessionBreakdown('sess-sum-p0','sess-tbody-p0', p0s, 'Day 1','Day 2');
     renderStats('stats-p0',  P0_LOG, P0_EXERCISES);
     renderCharts('charts-p0', P0_LOG, P0_EXERCISES);
-    renderTable('log-p0',    P0_LOG);
+    initLogTable('p0', P0_LOG, p0s, 'Day 1', 'Day 2');
     p0Rendered = true;
   }
 }
@@ -1142,7 +1273,7 @@ const p2s = classifySessions(P2_LOG,
 renderSessionBreakdown('sess-sum-p2','sess-tbody-p2', p2s, 'Day 1','Day 2');
 renderStats('stats-p2',  P2_LOG, P2_EXERCISES);
 renderCharts('charts-p2', P2_LOG, P2_EXERCISES);
-renderTable('log-p2',    P2_LOG);
+initLogTable('p2', P2_LOG, p2s, 'Day 1', 'Day 2');
 </script>
 </body>
 </html>
