@@ -263,8 +263,9 @@
     <p>教練：Jerry Sun　｜　起始日：2026.01</p>
   </div>
   <div class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('phase2')">現在課表（2026.05.11 起）</button>
-    <button class="tab-btn" onclick="switchTab('phase1')">過去課表（2026.02 – 05.09）</button>
+    <button class="tab-btn active" onclick="switchTab('phase2')">第三期（2026.05.11 起）</button>
+    <button class="tab-btn" onclick="switchTab('phase1')">第二期（2026.02 – 05.09）</button>
+    <button class="tab-btn" onclick="switchTab('phase0')">第一期（2026.01 – 02）</button>
   </div>
 </header>
 
@@ -482,6 +483,112 @@
 
 </div>
 </div><!-- /tab-phase1 -->
+
+<!-- ════════════════════════════════════════════════════
+     TAB 3 — 第一期  (Phase 0)  2026.01 – 02
+════════════════════════════════════════════════════ -->
+<div id="tab-phase0" class="tab-content">
+<div class="container">
+
+  <div class="program-section">
+    <div class="section-title">課表內容</div>
+    <div class="program-grid">
+
+      <div class="program-card" style="border-top: 3px solid #3182ce;">
+        <h3 style="color:#3182ce">Day 1</h3>
+        <ul>
+          <li>
+            <span class="ex-num">①</span>
+            <div>
+              <div class="ex-detail"><strong>高背槓深蹲底部暫停</strong></div>
+              <div class="ex-sets">27.5–30 kg　4 × 6</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">②</span>
+            <div>
+              <div class="ex-detail"><strong>槓鈴架上臥推 T&G</strong>（架在胸上一拳高，碰架起）</div>
+              <div class="ex-sets">20–22.5 kg　4 × 5</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">③</span>
+            <div>
+              <div class="ex-detail"><strong>配對組：</strong></div>
+              <div class="ex-detail">椅上單手啞鈴划船　12.5 kg</div>
+              <div class="ex-sets">3 × 各 8</div>
+              <div class="ex-detail" style="margin-top:4px">雙啞鈴 RDL　2 × 10 kg+</div>
+              <div class="ex-sets">3 × 8</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">④</span>
+            <div>
+              <div class="ex-detail"><strong>單邊負重行走</strong></div>
+              <div class="ex-sets">17.5 kg+　3 × 各 15 公尺</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="program-card" style="border-top: 3px solid #805ad5;">
+        <h3 style="color:#805ad5">Day 2</h3>
+        <ul>
+          <li>
+            <span class="ex-num">①</span>
+            <div>
+              <div class="ex-detail"><strong>墊上傳統硬舉</strong>（每下墊上靜止起）</div>
+              <div class="ex-sets">30–35 kg　4 × 6</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">②</span>
+            <div>
+              <div class="ex-detail"><strong>槓鈴架上肩推</strong></div>
+              <div class="ex-sets">15–20 kg　4 × 5</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">③</span>
+            <div>
+              <div class="ex-detail"><strong>配對組：</strong></div>
+              <div class="ex-detail">酒杯分腿蹲　10 kg</div>
+              <div class="ex-sets">3 × 各 8</div>
+              <div class="ex-detail" style="margin-top:4px">槓鈴反手引體向上</div>
+              <div class="ex-sets">3 × 8</div>
+            </div>
+          </li>
+          <li>
+            <span class="ex-num">④</span>
+            <div>
+              <div class="ex-detail"><strong>懸吊舉膝</strong></div>
+              <div class="ex-sets">3 × 12（第 3–4 週改 15 下）</div>
+            </div>
+          </li>
+        </ul>
+        <div class="schedule-note">
+          一週兩練，Day 1 / Day 2 輪流<br>
+          有上課那週只有一次自主訓練<br>
+          主項強度約 8/10，保留餘力 1–2 下
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="stats" id="stats-p0"></div>
+  <div class="section-title">重量進步折線圖</div>
+  <div class="charts-grid" id="charts-p0"></div>
+  <div class="section-title">訓練紀錄</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>日期</th><th>動作</th><th>重量</th><th>組數</th><th>次數</th><th>訓練量</th><th>備注</th></tr></thead>
+      <tbody id="log-p0"></tbody>
+    </table>
+  </div>
+
+</div>
+</div><!-- /tab-phase0 -->
 
 <footer>最後更新：<span id="last-updated"></span>　｜　<a href="https://github.com/git-elaine/Self-Strength" target="_blank" style="color:#3182ce">GitHub</a></footer>
 
@@ -780,7 +887,7 @@ function renderTable(tbodyId, log) {
     .sort((a, b) => b[0].localeCompare(a[0]))
     .slice(0, 25);
 
-  const allDefs = [...P2_EXERCISES, ...P1_EXERCISES];
+  const allDefs = [...P2_EXERCISES, ...P1_EXERCISES, ...P0_EXERCISES];
 
   document.getElementById(tbodyId).innerHTML = rows.map(r => {
     const ex = allDefs.find(e => e.key === r[1]);
@@ -799,9 +906,94 @@ function renderTable(tbodyId, log) {
 }
 
 // ════════════════════════════════════════════════════════
+// PHASE 0 資料  （2026.01.05 – 2026.02.21）
+// ════════════════════════════════════════════════════════
+const P0_LOG = [
+  // 2026/01/05 Day1（做錯組次）
+  ['2026-01-05','高背槓深蹲底部暫停', 20,   3,12,  720, '組次做錯'],
+  ['2026-01-05','槓鈴架上臥推T&G',   20,   3, 8,  480, '組次做錯'],
+  ['2026-01-05','椅上單手啞鈴划船',  10,   3, 8,  240, ''],
+  ['2026-01-05','雙啞鈴RDL',         10,   3,12,  360, '多做了'],
+  ['2026-01-05','單邊負重行走',       15,   3, 0,    0, '繞一圈'],
+
+  // 2026/01/10 Day1
+  ['2026-01-10','高背槓深蹲底部暫停', 27.5, 4, 6,  660, '+30×1×4'],
+  ['2026-01-10','槓鈴架上臥推T&G',   22.5, 2, 5,  225, '20×2+22.5×2'],
+  ['2026-01-10','椅上單手啞鈴划船',  12.5, 3, 8,  300, ''],
+  ['2026-01-10','雙啞鈴RDL',         10,   3, 8,  240, ''],
+  ['2026-01-10','單邊負重行走',       17.5, 3, 0,    0, '15公尺各邊'],
+
+  // 2026/01/13 Day2
+  ['2026-01-13','墊上傳統硬舉',       30,   4, 6,  720, ''],
+  ['2026-01-13','槓鈴架上肩推',       17.5, 3, 5,  262, '短槓10kg+3.75×2'],
+  ['2026-01-13','酒杯分腿蹲',         10,   3, 8,  240, ''],
+  ['2026-01-13','槓鈴反手引體向上',    0,   3, 8,    0, '體重動作'],
+
+  // 2026/01/16 Day1
+  ['2026-01-16','高背槓深蹲底部暫停', 27.5, 4, 6,  660, ''],
+  ['2026-01-16','槓鈴架上臥推T&G',   20,   3, 5,  300, '組次混亂'],
+  ['2026-01-16','椅上單手啞鈴划船',  10,   3, 8,  240, '看錯應拿12.5'],
+  ['2026-01-16','雙啞鈴RDL',         10,   3, 8,  240, ''],
+  ['2026-01-16','單邊負重行走',       15,   3, 0,    0, '15公尺各邊'],
+
+  // 2026/01/20 Day2
+  ['2026-01-20','墊上傳統硬舉',       32.5, 2, 6,  390, '32.6≈32.5'],
+  ['2026-01-20','槓鈴架上肩推',       17.5, 4, 5,  350, ''],
+  ['2026-01-20','槓鈴反手引體向上',    0,   3, 8,    0, ''],
+  ['2026-01-20','酒杯分腿蹲',         10,   3, 8,  240, ''],
+
+  // 2026/02/02 Day1（出國後回來）
+  ['2026-02-02','高背槓深蹲底部暫停', 27.5, 4, 6,  660, ''],
+  ['2026-02-02','槓鈴架上臥推T&G',   17.5, 2, 5,  175, '20kg吃力退至17.5'],
+  ['2026-02-02','椅上單手啞鈴划船',  12.5, 3, 8,  300, ''],
+  ['2026-02-02','雙啞鈴RDL',         12.5, 3, 8,  300, '加重'],
+
+  // 2026/02/07 Day2
+  ['2026-02-07','墊上傳統硬舉',       32.5, 3, 6,  585, '30×1+32.5×3'],
+  ['2026-02-07','槓鈴架上肩推',       15.5, 4, 5,  310, '18kg失敗退至15.5'],
+  ['2026-02-07','槓鈴反手引體向上',    0,   3, 8,    0, ''],
+  ['2026-02-07','酒杯分腿蹲',         10,   3, 8,  240, ''],
+
+  // 2026/02/10 Day1
+  ['2026-02-10','高背槓深蹲底部暫停', 27.5, 3, 6,  495, '+30×1×5'],
+  ['2026-02-10','槓鈴架上臥推T&G',   20,   3, 5,  300, ''],
+  ['2026-02-10','椅上單手啞鈴划船',  12.5, 3, 8,  300, ''],
+  ['2026-02-10','雙啞鈴RDL',         12.5, 3, 8,  300, ''],
+  ['2026-02-10','單邊負重行走',       15,   3, 0,    0, '15公尺各邊'],
+
+  // 2026/02/15 Day2
+  ['2026-02-15','墊上傳統硬舉',       37.5, 2, 6,  450, '35×1+37.5×2'],
+  ['2026-02-15','槓鈴架上肩推',       15.5, 4, 5,  310, ''],
+  ['2026-02-15','槓鈴反手引體向上',    0,   3, 8,    0, ''],
+  ['2026-02-15','酒杯分腿蹲',         10,   3, 8,  240, ''],
+
+  // 2026/02/20 Day1（主項換做Day2硬舉）
+  ['2026-02-20','墊上傳統硬舉',       40,   3, 6,  720, '槓鈴區滿改練硬舉，進步'],
+  ['2026-02-20','槓鈴架上臥推T&G',   20,   2, 5,  200, '22.5失敗'],
+  ['2026-02-20','椅上單手啞鈴划船',  15,   3, 8,  360, '15kg過重型式崩'],
+  ['2026-02-20','雙啞鈴RDL',         15,   3, 8,  360, ''],
+
+  // 2026/02/21 Day2
+  ['2026-02-21','高背槓深蹲底部暫停', 30,   3, 6,  540, '改善中'],
+  ['2026-02-21','槓鈴架上肩推',       15.5, 4, 5,  310, ''],
+  ['2026-02-21','槓鈴反手引體向上',    0,   3, 8,    0, '做成正手（錯誤）'],
+  ['2026-02-21','酒杯分腿蹲',         10,   3, 8,  240, ''],
+];
+
+const P0_EXERCISES = [
+  { key: '高背槓深蹲底部暫停', label: '高背槓深蹲（底部暫停）', color: '#3182ce' },
+  { key: '墊上傳統硬舉',       label: '墊上傳統硬舉',           color: '#805ad5' },
+  { key: '槓鈴架上臥推T&G',   label: '架上臥推 T&G',           color: '#38a169' },
+  { key: '槓鈴架上肩推',       label: '架上肩推',               color: '#dd6b20' },
+  { key: '椅上單手啞鈴划船',   label: '單手啞鈴划船',           color: '#d53f8c' },
+  { key: '單邊負重行走',        label: '單邊負重行走',           color: '#0891b2' },
+];
+
+// ════════════════════════════════════════════════════════
 // Tab switching
 // ════════════════════════════════════════════════════════
 let p1Rendered = false;
+let p0Rendered = false;
 
 function switchTab(id) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -814,6 +1006,12 @@ function switchTab(id) {
     renderCharts('charts-p1', P1_LOG, P1_EXERCISES);
     renderTable('log-p1',    P1_LOG);
     p1Rendered = true;
+  }
+  if (id === 'phase0' && !p0Rendered) {
+    renderStats('stats-p0',  P0_LOG, P0_EXERCISES);
+    renderCharts('charts-p0', P0_LOG, P0_EXERCISES);
+    renderTable('log-p0',    P0_LOG);
+    p0Rendered = true;
   }
 }
 
