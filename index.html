@@ -423,7 +423,7 @@
   <div class="session-summary" id="sess-sum-p2"></div>
   <div class="table-wrap" style="margin-bottom:36px">
     <table>
-      <thead><tr><th>日期</th><th>課表</th><th>訓練動作</th></tr></thead>
+      <thead><tr><th>日期</th><th>課表</th><th>訓練動作</th><th>完成度</th></tr></thead>
       <tbody id="sess-tbody-p2"></tbody>
     </table>
   </div>
@@ -1058,26 +1058,51 @@ function classifySessions(log, d1Markers, d2Markers) {
 }
 
 // 場次統計 render
-const SKIP_EX = new Set(['側棒式','棒式','肘撐懸吊舉腿','原地蟲爬','反手引體向上','槓鈴反手引體向上','懸吊舉膝','懸吊舉腿']);
-
-function renderSessionBreakdown(sumId, tbodyId, sessions, d1Label, d2Label) {
+function renderSessionBreakdown(sumId, tbodyId, sessions, d1Label, d2Label, d1Full, d2Full) {
   const d1  = sessions.filter(s => s.type === 'D1').length;
   const d2  = sessions.filter(s => s.type === 'D2').length;
   const mix = sessions.filter(s => s.type === 'D1+D2').length;
 
+  let complete = 0, partial = 0;
+  if (d1Full && d2Full) {
+    sessions.forEach(s => {
+      const full = s.type === 'D1' ? d1Full : s.type === 'D2' ? d2Full : null;
+      if (!full) return;
+      const missing = full.filter(e => !s.exercises.includes(e));
+      if (missing.length === 0) complete++; else partial++;
+    });
+  }
+
   document.getElementById(sumId).innerHTML =
     `<div class="sess-stat d1"><div>${d1Label}</div><div class="cnt">${d1}</div><div>次</div></div>` +
     `<div class="sess-stat d2"><div>${d2Label}</div><div class="cnt">${d2}</div><div>次</div></div>` +
-    (mix ? `<div class="sess-stat mix"><div>混合</div><div class="cnt">${mix}</div><div>次</div></div>` : '');
+    (mix ? `<div class="sess-stat mix"><div>混合</div><div class="cnt">${mix}</div><div>次</div></div>` : '') +
+    (d1Full ? `<div class="sess-stat" style="border-left:3px solid #38a169"><div>完整</div><div class="cnt">${complete}</div><div>次</div></div>` +
+              `<div class="sess-stat" style="border-left:3px solid #e53e3e"><div>不完整</div><div class="cnt">${partial}</div><div>次</div></div>` : '');
 
   document.getElementById(tbodyId).innerHTML = sessions.map(s => {
     const color = s.type === 'D1' ? '#2b6cb0' : s.type === 'D2' ? '#c53030' : '#c05621';
     const bg    = s.type === 'D1' ? '#ebf4ff' : s.type === 'D2' ? '#fff5f5' : '#fffaf0';
-    const exStr = s.exercises.filter(e => !SKIP_EX.has(e)).join('　');
+    const exStr = s.exercises.join('　');
+
+    let statusHtml = '';
+    if (d1Full && d2Full) {
+      const full = s.type === 'D1' ? d1Full : s.type === 'D2' ? d2Full : null;
+      if (full) {
+        const missing = full.filter(e => !s.exercises.includes(e));
+        if (missing.length === 0) {
+          statusHtml = '<span class="badge" style="background:#f0fff4;color:#38a169">完整</span>';
+        } else {
+          statusHtml = '<span class="badge" style="background:#fff5f5;color:#e53e3e">缺 ' + missing.join('、') + '</span>';
+        }
+      }
+    }
+
     return `<tr>
       <td>${s.date}</td>
       <td><span class="badge" style="background:${bg};color:${color}">${s.type}</span></td>
       <td style="color:#4a5568;font-size:0.8rem">${exStr}</td>
+      ${statusHtml ? '<td>' + statusHtml + '</td>' : ''}
     </tr>`;
   }).join('');
 }
@@ -1091,7 +1116,6 @@ function initLogTable(phase, log, sessions, d1Label, d2Label) {
 
   const allDefs = [...P2_EXERCISES, ...P1_EXERCISES, ...P0_EXERCISES];
   const rows = log
-    .filter(r => r[2] > 0)
     .map(r => ({
       date: r[0], ex: r[1], weight: r[2], sets: r[3], reps: r[4], vol: r[5], note: r[6],
       type: dateTypeMap[r[0]] || '',
@@ -1157,10 +1181,10 @@ function renderLog(phase) {
       <td>${r.date}</td>
       <td><span class="badge" style="background:${typeBg};color:${typeColor};font-size:0.75rem">${typeLabel}</span></td>
       <td><span class="badge" style="background:${r.color}20;color:${r.color}">${r.ex}</span></td>
-      <td><strong>${r.weight}</strong> kg</td>
+      <td>${r.weight > 0 ? '<strong>' + r.weight + '</strong> kg' : '<span style="color:#a0aec0">自重</span>'}</td>
       <td>${r.sets}</td>
       <td>${r.reps}</td>
-      <td>${r.vol} kg</td>
+      <td>${r.vol > 0 ? r.vol + ' kg' : '—'}</td>
       <td style="color:#718096;font-size:0.78rem">${r.note}</td>
     </tr>`;
   }).join('') || '<tr><td colspan="8" style="text-align:center;color:#a0aec0;padding:18px">無資料</td></tr>';
@@ -1289,10 +1313,12 @@ function switchTab(id) {
 // ════════════════════════════════════════════════════════
 document.getElementById('last-updated').textContent = new Date().toLocaleDateString('zh-TW');
 
+const P2_D1_FULL = ['高背槓深蹲','槓鈴反式划船','單邊啞鈴臥推','羅馬椅胸抱槓片','側棒式'];
+const P2_D2_FULL = ['相撲硬舉T&G','跪姿啞鈴肩推','滑輪下拉','酒杯跨步蹲','肘撐懸吊舉腿'];
 const p2s = classifySessions(P2_LOG,
   ['高背槓深蹲','槓鈴反式划船','單邊啞鈴臥推','羅馬椅胸抱槓片'],
   ['相撲硬舉T&G','跪姿啞鈴肩推','滑輪下拉','酒杯跨步蹲','肘撐懸吊舉腿']);
-renderSessionBreakdown('sess-sum-p2','sess-tbody-p2', p2s, 'Day 1','Day 2');
+renderSessionBreakdown('sess-sum-p2','sess-tbody-p2', p2s, 'Day 1','Day 2', P2_D1_FULL, P2_D2_FULL);
 renderStats('stats-p2',  P2_LOG, P2_EXERCISES);
 renderCharts('charts-p2', P2_LOG, P2_EXERCISES);
 initLogTable('p2', P2_LOG, p2s, 'Day 1', 'Day 2');
